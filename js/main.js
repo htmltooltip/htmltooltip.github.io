@@ -2,8 +2,8 @@ const newpage = { template: "<h1>hola</h1>"};
 const clear = { template: "<a href='np'>clear</a>"};
 
 const router = {
-  "/ITSTEP_HTMLTOOLTIP/np": newpage,
-  "/ITSTEP_HTMLTOOLTIP/": clear
+  "/np": newpage,
+  "/": clear
 }
 
 var app = new Vue({
