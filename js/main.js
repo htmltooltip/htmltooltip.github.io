@@ -1,26 +1,8 @@
-const Foo = { template: `
-  <div  v-for="route in this.$router.options.routes" >{{route.name}}</div>
-  <router-view></router-view>
-  ` }
-const Bar = { template: '<div>bar</div>' }
-const def = { template: '<div>def</div>' }
 
-const routes = [
-  { path: '/foo', component: Foo},
-  { path: '/bar', component: Bar },
-  { path: '/', component: def }
-]
-
-
-
-const router = new VueRouter({
-  routes
-})
-
-new Vue({
-  el: '#app',
-  data: function() {
-    return { 
+const CardList = Vue.component('cardList', {
+  template: '#template--card-list',
+  data() {
+    return {
       filter: "",
       cards: [
         { header: "Отступы", desc: "margin, padding", icon: "img/float.png", link: "foo" },
@@ -36,11 +18,31 @@ new Vue({
   computed: {
     getCards() {
       var cards = this.cards.filter((card) => {
-      	  var cardItem = card.header + " " + card.desc.split(",").join("");
+          var cardItem = card.header + " " + card.desc.split(",").join("");
           return cardItem.toLowerCase().includes(this.filter.toLowerCase());
         });
         return cards;
     }
-  },
-  router
+  }
 })
+
+const Card = Vue.component('card', {
+  template: '#template--card',
+  props: ['cardInfo']
+})
+
+const router = new VueRouter({
+  routes: [
+    { 
+      name: 'cardList',
+      path: '/',
+      component: CardList,
+    }
+  ]
+});
+
+new Vue({
+  el: '#app',
+  
+  router
+});

@@ -8,22 +8,33 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
+	
 	<div id="app">
+		 <router-view></router-view>
+	</div>
+
+	<template id="template--card-list">
 		<div class="container">
 			<input type="text" class="input" placeholder="Поиск" v-model="filter">
 			<div class="block">
 				<router-link :to="'/' + card.link" class="box" v-for="card in getCards">
-					<div class="box__header">{{ card.header }}</div>
-					<div class="box__content">
-						<div class="box__desc">{{ card.desc }}</div>
-						<div class="box__icon" :style="{ 'background-image': 'url(' + card.icon + ')' }"></div>
-					</div>
+					<card :card-info="card"></card>
 				</router-link>
 			</div>
 		    <div v-if="getCards.length === 0" class="box__empty">Ничего не найдено</div>
-		    <router-view></router-view>
 		</div>
-	</div>
+	</template>
+
+	<template id="template--card">
+		<div>
+			<div class="box__header">{{ cardInfo.header }}</div>
+			<div class="box__content">
+				<div class="box__desc">{{ cardInfo.desc }}</div>
+				<div class="box__icon" :style="{ 'background-image': 'url(' + cardInfo.icon + ')' }"></div>
+			</div>
+		</div>
+	</template>
+
 	<script type="text/javascript" src="js/vue.min.js"></script>
 	<script type="text/javascript" src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
