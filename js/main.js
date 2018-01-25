@@ -1,27 +1,36 @@
-const newpage = { template: "<h1>hola</h1>"};
-const clear = { template: "<a href='np'>clear</a>"};
+const Foo = { template: `
+  <div  v-for="route in this.$router.options.routes" >{{route.name}}</div>
+  <router-view></router-view>
+  ` }
+const Bar = { template: '<div>bar</div>' }
+const def = { template: '<div>def</div>' }
 
-const router = {
-  "/np": newpage,
-  "/": clear
-}
+const routes = [
+  { path: '/foo', component: Foo},
+  { path: '/bar', component: Bar },
+  { path: '/', component: def }
+]
 
-var app = new Vue({
+
+
+const router = new VueRouter({
+  routes
+})
+
+new Vue({
   el: '#app',
   data: function() {
     return { 
       filter: "",
-      seen: true,
       cards: [
-        { header: "Отступы", desc: "margin, padding", icon: "img/float.png", hash: "spacing" },
-        { header: "111", desc: "margin, left", icon: "img/animation.png", hash: "111" },
-        { header: "222", desc: "top, padding", icon: "img/border.png",  hash: "222" },
-        { header: "222", desc: "top, padding", icon: "img/debugging.png",  hash: "222" },
-        { header: "222", desc: "top, padding", icon: "img/display.png",  hash: "222" },
-        { header: "222", desc: "top, padding", icon: "img/fonts.png",  hash: "222" },
-        { header: "222", desc: "top, padding", icon: "img/flex.png",  hash: "222" },
-      ],
-      CR: window.location.pathname
+        { header: "Отступы", desc: "margin, padding", icon: "img/float.png", link: "foo" },
+        { header: "111", desc: "margin, left", icon: "img/animation.png", link: "bar" },
+        { header: "222", desc: "top, padding", icon: "img/border.png",  link: "222" },
+        { header: "222", desc: "top, padding", icon: "img/debugging.png",  link: "222" },
+        { header: "222", desc: "top, padding", icon: "img/display.png",  link: "222" },
+        { header: "222", desc: "top, padding", icon: "img/fonts.png",  link: "222" },
+        { header: "222", desc: "top, padding", icon: "img/flex.png",  link: "222" },
+      ]
     }
   },
   computed: {
@@ -31,24 +40,7 @@ var app = new Vue({
           return cardItem.toLowerCase().includes(this.filter.toLowerCase());
         });
         return cards;
-    },
-    VC() {
-      return router[this.CR] || clear
     }
   },
-  render (h) {
-    return h(this.VC)
-  }
-})
-
-console.log(app["CR"]) 
-
-$(".box").on("click", function() {
-	$(".page").load("page.html")
-  app.seen = false;
-})
-
-$(".input").on("click", function() {
-  app.seen = true;
-  console.log("123")
+  router
 })

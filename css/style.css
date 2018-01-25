@@ -24,6 +24,7 @@ body {
     display: inline-block;
     margin-right: 5px;
     margin-bottom: 5px;
+    padding: 10px;
     color: #000;
     text-decoration: none;
     box-sizing: border-box;
@@ -31,16 +32,6 @@ body {
 
 .box:nth-child(5n) {
 	margin-right: 0;
-}
-
-.box__header {
-    padding: 10px;
-    padding-bottom: 0;
-}
-
-.box__content {
-	padding: 10px;
-    padding-top: 0;
 }
 
 .box__desc {
