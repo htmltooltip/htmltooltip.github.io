@@ -35,9 +35,25 @@
 		</div>
 	</template>
 
+	<template id="template--page">
+		<div class="container">
+			<div class="page">
+				<button-back></button-back>
+				<div class="box__header">{{ getPage.pageHeader }}</div>
+				<div class="box__desc">{{ getPage.pageDesc }}</div>
+				<div class="page__icon" :style="{ 'background-image': 'url(' + getPage.pageIcon + ')' }"></div>
+				<script type="text/javascript" :src="{ getPage.pageHeader }.json"></script>
+				<div class="page__content">{{ getPage.pageContent }}</div>
+			</div>
+		</div>
+	</template>
+
+	<template id="button-back">
+		<div class="page-back" v-on:click="goBack()"></div>
+	</template>
+
 	<script type="text/javascript" src="js/vue.min.js"></script>
 	<script type="text/javascript" src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
-	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>
