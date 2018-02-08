@@ -41,9 +41,8 @@
 				<button-back></button-back>
 				<div class="box__header">{{ getPage.pageHeader }}</div>
 				<div class="box__desc">{{ getPage.pageDesc }}</div>
-				<div class="page__icon" :style="{ 'background-image': 'url(' + getPage.pageIcon + ')' }"></div>
-				<script type="text/javascript" :src="{ getPage.pageHeader }.json"></script>
 				<div class="page__content">{{ getPage.pageContent }}</div>
+				<iframe class="iframe" frameborder="0" width="100%" :src="'pages/' + getPage.pageLink + '.html'"></iframe>
 			</div>
 		</div>
 	</template>
@@ -51,6 +50,13 @@
 	<template id="button-back">
 		<div class="page-back" v-on:click="goBack()"></div>
 	</template>
+
+	<div class="container">
+		<div class="footer">
+			<a href="http://yaroslav-i.ru" target="_blank">by space2pacman</a> |
+			<a href="https://github.com/htmltooltip/htmltooltip.github.io" target="_blank">fork me on github</a>
+		</div>
+	</div>
 
 	<script type="text/javascript" src="js/vue.min.js"></script>
 	<script type="text/javascript" src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
