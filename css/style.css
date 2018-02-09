@@ -79,9 +79,9 @@ body {
 }
 
 .page-back {
-    background-image: url(../img/icons/icon-arrow.png);
+    background-image: url(../img/icons/icon-arrow.svg);
     float: left;
-    width: 24px;
+    width: 32px;
     height: 32px;
     background-size: 100%;
     background-repeat: no-repeat;
