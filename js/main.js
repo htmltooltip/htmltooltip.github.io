@@ -1,4 +1,4 @@
-const data = [
+var data = [
 { header: "Теги", desc: "html, head, body", icon: "img/tags.png", link: "tags" },
 { header: "html5", desc: "header, nav, footer", icon: "img/html5.png",  link: "html5" },
 { header: "Атрибуты", desc: "attribute='value'", icon: "img/attribute.png",  link: "attribute" },
@@ -21,15 +21,15 @@ const data = [
 { header: "Keyframes", desc: "@keyframes", icon: "img/keyframes.png", link: "keyframes" },
 { header: "Медиазапросы", desc: "@media", icon: "img/media.png", link: "media" },
 { header: "Трансформация", desc: "transform", icon: "img/transform.png", link: "transform" }
-]
+];
 
 var pages = {};
 
 for(let i = 0;i<data.length;i++) {
-  pages[data[i].link] = {pageHeader: data[i].header, pageDesc: data[i].desc, pageLink: data[i].link, pageContent: data[i].content1}
+  pages[data[i].link] = {pageHeader: data[i].header, pageDesc: data[i].desc, pageLink: data[i].link}
 }
 
-const CardList = Vue.component('cardList', {
+var CardList = Vue.component('cardList', {
   template: '#template--card-list',
   data() {
     return {
@@ -46,14 +46,14 @@ const CardList = Vue.component('cardList', {
       return cards;
     }
   }
-})
+});
 
-const Card = Vue.component('card', {
+var Card = Vue.component('card', {
   template: '#template--card',
   props: ['cardInfo']
-})
+});
 
-const ButtonBack = Vue.component('button-back', {
+var ButtonBack = Vue.component('button-back', {
   template: '#button-back',
   methods: {
     goBack: function() {
@@ -61,9 +61,9 @@ const ButtonBack = Vue.component('button-back', {
       return false;
     }
   }
-})
+});
 
-const Page = Vue.component('page', {
+var Page = Vue.component('page', {
   template: '#template--page',
   data() {
     return {
@@ -75,16 +75,19 @@ const Page = Vue.component('page', {
       var page = pages[this.$router.history.current.name];
       return page;
     }
+  },
+  mounted(){
+    this.$refs.iframe.addEventListener("load", addFile);
   }
-})
+});
 
-var myRoutes = [{ name: 'cardList', path: '/', component: CardList }]
+var myRoutes = [{ name: 'cardList', path: '/', component: CardList }];
 
 for(let i = 0;i<data.length;i++) {
   myRoutes.push({ name: data[i].link, path: '/' + data[i].link, component: Page })
 }
 
-const router = new VueRouter({
+var router = new VueRouter({
   routes: myRoutes
 });
 
@@ -92,3 +95,21 @@ new Vue({
   el: '#app',
   router
 });
+
+function addFile() {
+  var iframe = document.querySelector("iframe");
+  var content = this.contentWindow.document.body.innerHTML;
+  var styles = ["pages", "prism"];
+
+  for (var i = 0; i < styles.length; i++) {
+    var cssLink = document.createElement("link");
+    cssLink.href = "../css/" + styles[i] + ".css"; 
+    cssLink.rel = "stylesheet"; 
+    cssLink.type = "text/css"; 
+    this.contentWindow.document.head.appendChild(cssLink);
+  }
+
+  var scriptLink = document.createElement("script");
+  scriptLink.src = "../js/prism.js";
+  this.contentWindow.document.body.appendChild(scriptLink);
+}
