@@ -1,3 +1,7 @@
+var pages = {};
+var app;
+var router;
+var routesList;
 var data = [
 { header: "Теги", desc: "html, head, body", icon: "img/tags.png", link: "tags" },
 { header: "html5", desc: "header, nav, footer", icon: "img/html5.png",  link: "html5" },
@@ -23,13 +27,7 @@ var data = [
 { header: "Трансформация", desc: "transform", icon: "img/transform.png", link: "transform" }
 ];
 
-var pages = {};
-
-for(let i = 0;i<data.length;i++) {
-  pages[data[i].link] = {pageHeader: data[i].header, pageDesc: data[i].desc, pageLink: data[i].link}
-}
-
-var CardList = Vue.component('cardList', {
+var cardList = Vue.component('cardList', {
   template: '#template--card-list',
   data() {
     return {
@@ -39,31 +37,16 @@ var CardList = Vue.component('cardList', {
   },
   computed: {
     getCards() {
-      var cards = this.cards.filter((card) => {
-        var cardItem = card.header + " " + card.desc.split(",").join("");
-        return cardItem.toLowerCase().includes(this.filter.toLowerCase());
+      var cards = this.cards.filter(card => {
+      	var item = card.header + " " + card.desc.split(",").join("");
+        return item.toLowerCase().includes(this.filter.toLowerCase());
       });
       return cards;
     }
   }
 });
 
-var Card = Vue.component('card', {
-  template: '#template--card',
-  props: ['cardInfo']
-});
-
-var ButtonBack = Vue.component('button-back', {
-  template: '#button-back',
-  methods: {
-    goBack: function() {
-      window.history.back();
-      return false;
-    }
-  }
-});
-
-var Page = Vue.component('page', {
+var page = Vue.component('page', {
   template: '#template--page',
   data() {
     return {
@@ -72,8 +55,7 @@ var Page = Vue.component('page', {
   },
   computed: {
     getPage() {
-      var page = pages[this.$router.history.current.name];
-      return page;
+      return pages[this.$router.history.current.name];
     }
   },
   mounted(){
@@ -81,35 +63,61 @@ var Page = Vue.component('page', {
   }
 });
 
-var myRoutes = [{ name: 'cardList', path: '/', component: CardList }];
-
-for(let i = 0;i<data.length;i++) {
-  myRoutes.push({ name: data[i].link, path: '/' + data[i].link, component: Page })
+function createPages() {
+	for(var i = 0; i<data.length; i++) {
+  		pages[data[i].link] = {pageHeader: data[i].header, pageDesc: data[i].desc, pageLink: data[i].link}
+	}
 }
 
-var router = new VueRouter({
-  routes: myRoutes
-});
+function createRouterList() {
+	routesList = [{ name: 'cardList', path: '/', component: cardList }];
 
-new Vue({
-  el: '#app',
-  router
-});
+	for(let i = 0;i<data.length;i++) {
+	  routesList.push({ name: data[i].link, path: '/' + data[i].link, component: page })
+	}
+}
 
 function addFile() {
-  var iframe = document.querySelector("iframe");
-  var content = this.contentWindow.document.body.innerHTML;
-  var styles = ["pages", "prism"];
+  	var iframe = document.querySelector("iframe");
+  	var content = this.contentWindow.document.body.innerHTML;
+  	var styles = ["pages", "prism"];
+	var cssLink;
+	var scriptLink;
 
-  for (var i = 0; i < styles.length; i++) {
-    var cssLink = document.createElement("link");
-    cssLink.href = "../css/" + styles[i] + ".css"; 
-    cssLink.rel = "stylesheet"; 
-    cssLink.type = "text/css"; 
-    this.contentWindow.document.head.appendChild(cssLink);
-  }
+	for (var i = 0; i < styles.length; i++) {
+		cssLink = document.createElement("link");
+	    cssLink.href = "../css/" + styles[i] + ".css"; 
+	    cssLink.rel = "stylesheet"; 
+	    cssLink.type = "text/css"; 
+	    this.contentWindow.document.head.appendChild(cssLink);
+	}
 
-  var scriptLink = document.createElement("script");
+  scriptLink = document.createElement("script");
   scriptLink.src = "../js/prism.js";
   this.contentWindow.document.body.appendChild(scriptLink);
 }
+
+function init() {
+	Vue.component('card', {
+	  template: '#template--card',
+	  props: ['cardInfo']
+	});
+
+	Vue.component('button-back', {
+	  template: '#button-back',
+	  methods: {
+	    goBack: function() {
+	      window.history.back();
+	      return false;
+	    }
+	  }
+	});
+
+	createRouterList();
+	createPages();
+
+	router = new VueRouter({ routes: routesList });
+	app = new Vue({ el: '#app', router });
+}
+
+init();

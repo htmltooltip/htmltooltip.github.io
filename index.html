@@ -16,10 +16,12 @@
 	<template id="template--card-list">
 		<div class="container">
 			<input type="text" class="input" placeholder="Поиск" v-model="filter">
-			<div class="block">
+			<div class="grid">
 				<router-link :to="'/' + card.link" class="box" v-for="card in getCards">
 					<card :card-info="card"></card>
 				</router-link>
+				<a class="box box--empty"></a>
+				<a class="box box--empty"></a>
 			</div>
 		    <div v-if="getCards.length === 0" class="box__empty">Ничего не найдено</div>
 		</div>
